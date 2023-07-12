@@ -1,0 +1,17 @@
+﻿<Comandos>
+	<ListaComandos>
+		<Comando>
+			<Nombre>Comando 1</Nombre>
+			<Descripcion>Descripción del comando 1</Descripcion>
+		</Comando>
+		<Comando>
+			<Nombre>Comando 2</Nombre>
+			<Descripcion>Descripción del comando 2</Descripcion>
+		</Comando>
+		<!-- Agrega tu nuevo comando aquí -->
+		<Comando>
+			<Nombre>Comando Nuevo</Nombre>
+			<Descripcion>Descripción del comando nuevo</Descripcion>
+		</Comando>
+	</ListaComandos>
+</Comandos>
