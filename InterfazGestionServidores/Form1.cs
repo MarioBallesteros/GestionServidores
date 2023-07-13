@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GestionServidores;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -20,23 +21,61 @@ namespace InterfazGestionServidores
         public Form1()
         {
             InitializeComponent();
+
         }
 
         private void Form1_Load(object sender, EventArgs e)
         {
             gestionServidores = new GestionServidores.GestionServidores();
             comandos = gestionServidores.CargarComandosDesdeXml();
-            txtLog.AppendText($"Nombre de la lista de comandos:");
+
+            var panelLista = new FlowLayoutPanel();
+            panelLista.FlowDirection = FlowDirection.TopDown;
+            panelLista.AutoSize = true;
+
             foreach (var lista in comandos)
             {
-                txtLog.AppendText($"Nombre de la lista de comandos: {lista.Nombre}\r\n");
+                var labelLista = new Label();
+                labelLista.Text = $"Lista de comandos: {lista.Nombre}";
+                labelLista.AutoSize = true;
+
+                panelLista.Controls.Add(labelLista);
 
                 foreach (var comando in lista.Comandos)
                 {
-                    txtLog.AppendText($"Comando: {comando.Nombre}\r\n");
+                    var buttonComando = new Button();
+                    buttonComando.Margin = new Padding(20, 5, 0, 0); // Ajustar los margenes aquí
+                    buttonComando.Text = $"{comando.Nombre.ToString()}";
+                    buttonComando.AutoSize = true;
+
+                    buttonComando.Click += (sender1, e1) =>
+                    {
+                        txtMetodos.Controls.Clear();
+
+                        var buttonMetodoEjecutar = new Button();
+                        buttonMetodoEjecutar.Text = "Ejecutar";
+                        buttonMetodoEjecutar.AutoSize = true;
+                        buttonMetodoEjecutar.Click += (sender2, e2) =>
+                        {
+                            comando.Ejecutar();
+                        };
+
+                        var buttonMetodoBorrar = new Button();
+                        buttonMetodoBorrar.Text = "Borrar";
+                        buttonMetodoBorrar.AutoSize = true;
+                        buttonMetodoBorrar.Click += (sender2, e2) =>
+                        {
+                            comando.Borrar();
+                        };
+
+                        txtMetodos.Controls.Add(buttonMetodoEjecutar);
+                        txtMetodos.Controls.Add(buttonMetodoBorrar);
+                    };
+
+                    panelLista.Controls.Add(buttonComando);
                 }
 
-                txtLog.AppendText("\r\n");
+                txtLog.Controls.Add(panelLista);
             }
         }
 
@@ -57,9 +96,17 @@ namespace InterfazGestionServidores
 
                     if (listaComandos != null)
                     {
+                        txtMetodos.Controls.Clear();
+
                         foreach (var comando in listaComandos.Comandos)
                         {
-                            txtMetodos.AppendText($"Método: {comando.Nombre}\r\n");
+                            var buttonMetodoEjecutar = new Button();
+                            buttonMetodoEjecutar.Text = "Ejecutar";
+                            buttonMetodoEjecutar.Click += (sender1, e1) =>
+                            {
+                                comando.Ejecutar();
+                            };
+                            txtMetodos.Controls.Add(buttonMetodoEjecutar);
                         }
                     }
                 }
@@ -99,18 +146,16 @@ namespace InterfazGestionServidores
 
                         if (!string.IsNullOrEmpty(selectedMethod))
                         {
-                            // ComandoGenerico comando = listaComandos.Comandos.FirstOrDefault(c => c.Nombre == selectedMethod);
+                            Comando comando = listaComandos.Comandos.FirstOrDefault(c => c.Nombre == selectedMethod);
 
-                            // if (comando != null)
-                            // {
-                            //     comando.Ejecutar();
-                            // }
+                            if (comando != null)
+                            {
+                                comando.Ejecutar();
+                            }
                         }
                     }
                 }
             }
         }
-
-  
     }
 }

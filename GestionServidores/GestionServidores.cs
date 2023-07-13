@@ -13,15 +13,11 @@ namespace GestionServidores
         {
             List<ListaComandos> listaComandos = new List<ListaComandos>();
 
-
-            // Accede al archivo XML
             var assembly = System.Reflection.Assembly.GetExecutingAssembly();
             using (var stream = assembly.GetManifestResourceStream("GestionServidores.Comandos.xml"))
             {
-                // Carga el archivo XML en un objeto XDocument
                 XDocument xmlDoc = XDocument.Load(stream);
 
-                // Obtiene la lista de comandos del XML
                 foreach (var elementoListaComandos in xmlDoc.Root.Elements("ListaComandos"))
                 {
                     ListaComandos lista = new ListaComandos();

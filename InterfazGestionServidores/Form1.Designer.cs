@@ -27,14 +27,16 @@
             this.txtLog.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.txtLog.Size = new System.Drawing.Size(350, 300);
             this.txtLog.TabIndex = 0;
+            this.txtLog.HideSelectionChanged += new System.EventHandler(this.txtLog_SelectionChanged);
+            this.txtLog.TextChanged += new System.EventHandler(this.txtLog_TextChanged);
             // 
             // btnCargarComandos
             // 
-            this.btnCargarComandos.Location = new System.Drawing.Point(388, 17);
+            this.btnCargarComandos.Location = new System.Drawing.Point(32, 352);
             this.btnCargarComandos.Name = "btnCargarComandos";
             this.btnCargarComandos.Size = new System.Drawing.Size(120, 23);
             this.btnCargarComandos.TabIndex = 1;
-            this.btnCargarComandos.Text = "Cargar Comandos";
+            this.btnCargarComandos.Text = "Modificar Comando";
             this.btnCargarComandos.UseVisualStyleBackColor = true;
             this.btnCargarComandos.Click += new System.EventHandler(this.btnCargarComandos_Click);
             // 
@@ -56,8 +58,9 @@
             this.btnEjecutar.Name = "btnEjecutar";
             this.btnEjecutar.Size = new System.Drawing.Size(120, 23);
             this.btnEjecutar.TabIndex = 3;
-            this.btnEjecutar.Text = "Ejecutar Método";
+            this.btnEjecutar.Text = "Ejecutar Comando";
             this.btnEjecutar.UseVisualStyleBackColor = true;
+            this.btnEjecutar.Click += new System.EventHandler(this.btnEjecutar_Click);
             // 
             // Form1
             // 
