@@ -8,6 +8,7 @@ namespace GestionServidores
 {
     public abstract class ComandoGenerico
     {
+        public string Nombre { get; set; }
         public abstract void Ejecutar();
         public abstract void Borrar();
         public void Log(string mensaje)

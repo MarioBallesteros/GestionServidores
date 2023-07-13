@@ -8,14 +8,14 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using GestionServidores;
+using static GestionServidores.GestionServidores;
 
 namespace InterfazGestionServidores
 {
     public partial class Form1 : Form
     {
         private List<ListaComandos> comandos;
-        GestionServidores.GestionServidores gestionServidores;
+        private GestionServidores.GestionServidores gestionServidores;
 
         public Form1()
         {
@@ -26,14 +26,14 @@ namespace InterfazGestionServidores
         {
             gestionServidores = new GestionServidores.GestionServidores();
             comandos = gestionServidores.CargarComandosDesdeXml();
-
-            foreach (var comando in comandos)
+            txtLog.AppendText($"Nombre de la lista de comandos:");
+            foreach (var lista in comandos)
             {
-                txtLog.AppendText($"Nombre de la lista de comandos: {comando.Nombre}\r\n");
+                txtLog.AppendText($"Nombre de la lista de comandos: {lista.Nombre}\r\n");
 
-                foreach (var comandoIndividual in comando.Comandos)
+                foreach (var comando in lista.Comandos)
                 {
-                    txtLog.AppendText($"Comando: {comandoIndividual}\r\n");
+                    txtLog.AppendText($"Comando: {comando.Nombre}\r\n");
                 }
 
                 txtLog.AppendText("\r\n");
@@ -59,7 +59,7 @@ namespace InterfazGestionServidores
                     {
                         foreach (var comando in listaComandos.Comandos)
                         {
-                            txtMetodos.AppendText($"Método: {comando}\r\n");
+                            txtMetodos.AppendText($"Método: {comando.Nombre}\r\n");
                         }
                     }
                 }
@@ -68,16 +68,15 @@ namespace InterfazGestionServidores
 
         private void btnCargarComandos_Click(object sender, EventArgs e)
         {
-            GestionServidores.GestionServidores gestionServidores = new GestionServidores.GestionServidores();
-            List<ListaComandos> listaComandos = gestionServidores.CargarComandosDesdeXml();
+            comandos = gestionServidores.CargarComandosDesdeXml();
 
-            foreach (var lista in listaComandos)
+            foreach (var lista in comandos)
             {
                 txtLog.AppendText($"Nombre de la lista de comandos: {lista.Nombre}\r\n");
 
                 foreach (var comando in lista.Comandos)
                 {
-                    txtLog.AppendText($"Comando: {comando}\r\n");
+                    txtLog.AppendText($"Comando: {comando.Nombre}\r\n");
                 }
 
                 txtLog.AppendText("\r\n");
@@ -100,16 +99,18 @@ namespace InterfazGestionServidores
 
                         if (!string.IsNullOrEmpty(selectedMethod))
                         {
-                           // ComandoGenerico comando = listaComandos.Comandos.FirstOrDefault(c => c.GetType().Name == selectedMethod);
+                            // ComandoGenerico comando = listaComandos.Comandos.FirstOrDefault(c => c.Nombre == selectedMethod);
 
-                           // if (comando != null)
-                            //{
-                               // comando.Ejecutar();
-                            //}
+                            // if (comando != null)
+                            // {
+                            //     comando.Ejecutar();
+                            // }
                         }
                     }
                 }
             }
         }
+
+  
     }
 }

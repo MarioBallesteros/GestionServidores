@@ -10,7 +10,6 @@
 
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             this.txtLog = new System.Windows.Forms.TextBox();
             this.btnCargarComandos = new System.Windows.Forms.Button();
             this.txtMetodos = new System.Windows.Forms.TextBox();
@@ -28,7 +27,6 @@
             this.txtLog.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.txtLog.Size = new System.Drawing.Size(350, 300);
             this.txtLog.TabIndex = 0;
-           // this.txtLog.SelectionChanged += new System.EventHandler(this.txtLog_SelectionChanged);
             // 
             // btnCargarComandos
             // 
@@ -72,8 +70,10 @@
             this.Controls.Add(this.txtLog);
             this.Name = "Form1";
             this.Text = "Form1";
+            this.Load += new System.EventHandler(this.Form1_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
+
         }
     }
 }

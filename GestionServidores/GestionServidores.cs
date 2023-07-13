@@ -13,35 +13,38 @@ namespace GestionServidores
         {
             List<ListaComandos> listaComandos = new List<ListaComandos>();
 
+
+            // Accede al archivo XML
             var assembly = System.Reflection.Assembly.GetExecutingAssembly();
             using (var stream = assembly.GetManifestResourceStream("GestionServidores.Comandos.xml"))
             {
+                // Carga el archivo XML en un objeto XDocument
                 XDocument xmlDoc = XDocument.Load(stream);
 
-                foreach (var listaComandosElement in xmlDoc.Root.Elements("ListaComandos"))
+                // Obtiene la lista de comandos del XML
+                foreach (var elementoListaComandos in xmlDoc.Root.Elements("ListaComandos"))
                 {
-                    var nombreLista = (string)listaComandosElement.Attribute("Nombre");
-
                     ListaComandos lista = new ListaComandos();
-                    lista.Nombre = nombreLista;
-                    lista.Comandos = new List<string>();
+                    lista.Nombre = elementoListaComandos.Attribute("NombreLista")?.Value;
+                    lista.Comandos = new List<Comando>();
 
-                    foreach (var comandoElement in listaComandosElement.Elements("Comando"))
+                    foreach (var elementoComando in elementoListaComandos.Elements("Comando"))
                     {
-                        var comando = (string)comandoElement;
+                        Comando comando = new Comando();
+                        comando.Nombre = elementoComando.Attribute("Nombre")?.Value;
+
                         lista.Comandos.Add(comando);
                     }
 
                     listaComandos.Add(lista);
                 }
+                return listaComandos;
             }
-            return listaComandos;
+        }
+        public class ListaComandos
+        {
+            public string Nombre { get; set; }
+            public List<Comando> Comandos { get; set; }
         }
     }
-    public class ListaComandos
-    {
-        public string Nombre { get; set; }
-        public List<string> Comandos { get; set; }
-    }
 }
-
