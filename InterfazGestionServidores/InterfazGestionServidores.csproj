@@ -81,7 +81,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\GestionServidores\GestionServidores.csproj">
-      <Project>{893E2458-E5AB-4741-9879-0EFB4E9F87B9}</Project>
+      <Project>{893e2458-e5ab-4741-9879-0efb4e9f87b9}</Project>
       <Name>GestionServidores</Name>
     </ProjectReference>
   </ItemGroup>

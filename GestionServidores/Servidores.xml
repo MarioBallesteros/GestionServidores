@@ -1,0 +1,78 @@
+﻿<Servidores>
+	<ListaServidores NombreLista="Servidores 01">
+		<Servidor Nombre="Servidor 1">
+			<MetodoEjecutar>
+				<Carpeta>carpeta_ejecutar1</Carpeta>
+				<Comando>net stop NombreDelServicio and net start NombreDelServicio</Comando>
+			</MetodoEjecutar>
+			<MetodoBorrar>
+				<Carpeta>carpeta_borrar1</Carpeta>
+				<Comando>borrar_servidor1</Comando>
+			</MetodoBorrar>
+		</Servidor>
+		<Servidor Nombre="Servidor 2">
+			<MetodoEjecutar>
+				<Carpeta>carpeta_ejecutar2</Carpeta>
+				<Comando>powershell -ExecutionPolicy Bypass -File RutaDelScript.ps1</Comando>
+			</MetodoEjecutar>
+			<MetodoBorrar>
+				<Carpeta>carpeta_borrar2</Carpeta>
+				<Comando>borrar_servidor2</Comando>
+			</MetodoBorrar>
+		</Servidor>
+	</ListaServidores>
+	<ListaServidores NombreLista="Servidores 02">
+		<Servidor Nombre="Servidor 3">
+			<MetodoEjecutar>
+				<Carpeta>carpeta_ejecutar3</Carpeta>
+				<Comando>shutdown /r /t 0</Comando>
+			</MetodoEjecutar>
+			<MetodoBorrar>
+				<Carpeta>carpeta_borrar3</Carpeta>
+				<Comando>borrar_servidor3</Comando>
+			</MetodoBorrar>
+		</Servidor>
+		<Servidor Nombre="Servidor 4">
+			<MetodoEjecutar>
+				<Carpeta>carpeta_ejecutar4</Carpeta>
+				<Comando>shutdown /r /t 0</Comando>
+			</MetodoEjecutar>
+			<MetodoBorrar>
+				<Carpeta>carpeta_borrar4</Carpeta>
+				<Comando>borrar_servidor4</Comando>
+			</MetodoBorrar>
+		</Servidor>
+	</ListaServidores>
+	<ListaServidores NombreLista="Servidores 03">
+		<Servidor Nombre="Servidor 5">
+			<MetodoEjecutar>
+				<Carpeta>carpeta_ejecutar1</Carpeta>
+				<Comando>net stop NombreDelServicio and net start NombreDelServicio</Comando>
+			</MetodoEjecutar>
+			<MetodoBorrar>
+				<Carpeta>carpeta_borrar1</Carpeta>
+				<Comando>borrar_servidor1</Comando>
+			</MetodoBorrar>
+		</Servidor>
+		<Servidor Nombre="Servidor 6">
+			<MetodoEjecutar>
+				<Carpeta>carpeta_ejecutar2</Carpeta>
+				<Comando>powershell -ExecutionPolicy Bypass -File RutaDelScript.ps1</Comando>
+			</MetodoEjecutar>
+			<MetodoBorrar>
+				<Carpeta>carpeta_borrar2</Carpeta>
+				<Comando>borrar_servidor2</Comando>
+			</MetodoBorrar>
+		</Servidor>
+		<Servidor Nombre="Servidor 7">
+			<MetodoEjecutar>
+				<Carpeta>carpeta_ejecutar2</Carpeta>
+				<Comando>powershell -ExecutionPolicy Bypass -File RutaDelScript.ps1</Comando>
+			</MetodoEjecutar>
+			<MetodoBorrar>
+				<Carpeta>carpeta_borrar2</Carpeta>
+				<Comando>borrar_servidor2</Comando>
+			</MetodoBorrar>
+		</Servidor>
+	</ListaServidores>
+</Servidores>

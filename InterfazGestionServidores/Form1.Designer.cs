@@ -27,7 +27,6 @@
             this.txtLog.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.txtLog.Size = new System.Drawing.Size(350, 300);
             this.txtLog.TabIndex = 0;
-            this.txtLog.HideSelectionChanged += new System.EventHandler(this.txtLog_SelectionChanged);
             this.txtLog.TextChanged += new System.EventHandler(this.txtLog_TextChanged);
             // 
             // btnCargarComandos
@@ -51,6 +50,7 @@
             this.txtMetodos.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.txtMetodos.Size = new System.Drawing.Size(300, 300);
             this.txtMetodos.TabIndex = 2;
+            this.txtMetodos.TextChanged += new System.EventHandler(this.txtLog_TextChanged);
             // 
             // btnEjecutar
             // 
@@ -60,7 +60,6 @@
             this.btnEjecutar.TabIndex = 3;
             this.btnEjecutar.Text = "Ejecutar Comando";
             this.btnEjecutar.UseVisualStyleBackColor = true;
-            this.btnEjecutar.Click += new System.EventHandler(this.btnEjecutar_Click);
             // 
             // Form1
             // 

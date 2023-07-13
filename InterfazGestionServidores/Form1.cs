@@ -15,68 +15,62 @@ namespace InterfazGestionServidores
 {
     public partial class Form1 : Form
     {
-        private List<ListaComandos> comandos;
+        private List<ListaServidores> servidores;
         private GestionServidores.GestionServidores gestionServidores;
 
         public Form1()
         {
             InitializeComponent();
-
         }
 
         private void Form1_Load(object sender, EventArgs e)
         {
             gestionServidores = new GestionServidores.GestionServidores();
-            comandos = gestionServidores.CargarComandosDesdeXml();
-
+            servidores = gestionServidores.CargarServidoresDesdeXml();
             var panelLista = new FlowLayoutPanel();
             panelLista.FlowDirection = FlowDirection.TopDown;
             panelLista.AutoSize = true;
 
-            foreach (var lista in comandos)
+            var cont = servidores.Count;
+            foreach (var lista in servidores)
             {
-                var labelLista = new Label();
-                labelLista.Text = $"Lista de comandos: {lista.Nombre}";
-                labelLista.AutoSize = true;
+                var buttonLista = new Button();
+                buttonLista.Text = lista.Nombre;
+                buttonLista.AutoSize = true;
 
-                panelLista.Controls.Add(labelLista);
+                panelLista.Controls.Add(buttonLista);
 
-                foreach (var comando in lista.Comandos)
+                foreach (var comando in lista.Servidores)
                 {
-                    var buttonComando = new Button();
-                    buttonComando.Margin = new Padding(20, 5, 0, 0); // Ajustar los margenes aquí
-                    buttonComando.Text = $"{comando.Nombre.ToString()}";
-                    buttonComando.AutoSize = true;
-
-                    buttonComando.Click += (sender1, e1) =>
+                    buttonLista.Click += (sender1, e1) =>
                     {
                         txtMetodos.Controls.Clear();
-
-                        var buttonMetodoEjecutar = new Button();
-                        buttonMetodoEjecutar.Text = "Ejecutar";
-                        buttonMetodoEjecutar.AutoSize = true;
-                        buttonMetodoEjecutar.Click += (sender2, e2) =>
-                        {
-                            comando.Ejecutar();
-                        };
-
-                        var buttonMetodoBorrar = new Button();
-                        buttonMetodoBorrar.Text = "Borrar";
-                        buttonMetodoBorrar.AutoSize = true;
-                        buttonMetodoBorrar.Click += (sender2, e2) =>
-                        {
-                            comando.Borrar();
-                        };
-
-                        txtMetodos.Controls.Add(buttonMetodoEjecutar);
-                        txtMetodos.Controls.Add(buttonMetodoBorrar);
+                        MostrarServidores(lista.Servidores);
                     };
-
-                    panelLista.Controls.Add(buttonComando);
                 }
 
                 txtLog.Controls.Add(panelLista);
+                txtLog.AppendText("\r\n");
             }
+        }
+
+        private void MostrarServidores(List<Servidor> servidores)
+        {
+            txtMetodos.Clear();
+            var panelLista = new FlowLayoutPanel();
+            panelLista.FlowDirection = FlowDirection.TopDown;
+            panelLista.AutoSize = true;
+            foreach (var servidor in servidores)
+            {
+                var buttonServidor = new Button();
+                buttonServidor.Text = servidor.Nombre;
+                buttonServidor.AutoSize = true;
+                panelLista.Controls.Add(buttonServidor);
+
+            }
+            txtMetodos.Controls.Add(panelLista);
+            txtMetodos.AppendText("\r\n");
+
         }
 
         private void txtLog_TextChanged(object sender, EventArgs e)
@@ -84,46 +78,20 @@ namespace InterfazGestionServidores
             txtMetodos.Clear();
         }
 
-        private void txtLog_SelectionChanged(object sender, EventArgs e)
-        {
-            if (txtLog.SelectionLength > 0)
-            {
-                string selectedCommand = txtLog.SelectedText.Trim();
-
-                if (!string.IsNullOrEmpty(selectedCommand))
-                {
-                    ListaComandos listaComandos = comandos.FirstOrDefault(l => l.Nombre == selectedCommand);
-
-                    if (listaComandos != null)
-                    {
-                        txtMetodos.Controls.Clear();
-
-                        foreach (var comando in listaComandos.Comandos)
-                        {
-                            var buttonMetodoEjecutar = new Button();
-                            buttonMetodoEjecutar.Text = "Ejecutar";
-                            buttonMetodoEjecutar.Click += (sender1, e1) =>
-                            {
-                                comando.Ejecutar();
-                            };
-                            txtMetodos.Controls.Add(buttonMetodoEjecutar);
-                        }
-                    }
-                }
-            }
-        }
-
         private void btnCargarComandos_Click(object sender, EventArgs e)
         {
-            comandos = gestionServidores.CargarComandosDesdeXml();
+            servidores = gestionServidores.CargarServidoresDesdeXml();
 
-            foreach (var lista in comandos)
+            txtLog.Clear();
+            txtMetodos.Clear();
+
+            foreach (var lista in servidores)
             {
-                txtLog.AppendText($"Nombre de la lista de comandos: {lista.Nombre}\r\n");
+                txtLog.AppendText($"Nombre de la lista de servidores: {lista.Nombre}\r\n");
 
-                foreach (var comando in lista.Comandos)
+                foreach (var servidor in lista.Servidores)
                 {
-                    txtLog.AppendText($"Comando: {comando.Nombre}\r\n");
+                    txtLog.AppendText($"Servidor: {servidor.Nombre}\r\n");
                 }
 
                 txtLog.AppendText("\r\n");
@@ -138,21 +106,11 @@ namespace InterfazGestionServidores
 
                 if (!string.IsNullOrEmpty(selectedCommand))
                 {
-                    ListaComandos listaComandos = comandos.FirstOrDefault(l => l.Nombre == selectedCommand);
+                    ListaServidores listaServidores = servidores.FirstOrDefault(l => l.Nombre == selectedCommand);
 
-                    if (listaComandos != null)
+                    if (listaServidores != null)
                     {
-                        string selectedMethod = txtMetodos.SelectedText.Trim();
-
-                        if (!string.IsNullOrEmpty(selectedMethod))
-                        {
-                            Comando comando = listaComandos.Comandos.FirstOrDefault(c => c.Nombre == selectedMethod);
-
-                            if (comando != null)
-                            {
-                                comando.Ejecutar();
-                            }
-                        }
+                        // Ejecuta el método de ejecución del servidor seleccionado
                     }
                 }
             }
