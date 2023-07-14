@@ -103,7 +103,7 @@ namespace InterfazGestionServidores
 
                 if (servidor != null)
                 {
-                    EditarServidorForm editarServidorForm = new EditarServidorForm(servidor, servidores);
+                    EditarServidorForm editarServidorForm = new EditarServidorForm(servidor, servidores,this.gestionServidores);
                     editarServidorForm.ShowDialog();
 
                     // Actualizar los datos del servidor en el txtInfo después de cerrar el formulario de edición

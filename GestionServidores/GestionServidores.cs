@@ -6,47 +6,45 @@ namespace GestionServidores
 {
     public class GestionServidores
     {
+        private string xmlFilePath = @"C:\Users\Mario Ballesteros\source\repos\GestionServidores\GestionServidores\Servidores.xml";
+
         public List<ListaServidores> CargarServidoresDesdeXml()
         {
             List<ListaServidores> listaServidores = new List<ListaServidores>();
 
-            var assembly = System.Reflection.Assembly.GetExecutingAssembly();
-            using (var stream = assembly.GetManifestResourceStream("GestionServidores.Servidores.xml"))
+            XDocument xmlDoc = XDocument.Load(xmlFilePath);
+
+            foreach (var elementoListaServidores in xmlDoc.Root.Elements("ListaServidores"))
             {
-                XDocument xmlDoc = XDocument.Load(stream);
+                ListaServidores lista = new ListaServidores();
+                lista.Nombre = elementoListaServidores.Attribute("NombreLista")?.Value;
+                lista.Servidores = new List<Servidor>();
 
-                foreach (var elementoListaServidores in xmlDoc.Root.Elements("ListaServidores"))
+                foreach (var elementoServidor in elementoListaServidores.Elements("Servidor"))
                 {
-                    ListaServidores lista = new ListaServidores();
-                    lista.Nombre = elementoListaServidores.Attribute("NombreLista")?.Value;
-                    lista.Servidores = new List<Servidor>();
+                    Servidor servidor = new Servidor();
+                    servidor.Nombre = elementoServidor.Attribute("Nombre")?.Value;
+                    servidor.MetodoEjecutar = new Metodo();
+                    servidor.MetodoBorrar = new Metodo();
 
-                    foreach (var elementoServidor in elementoListaServidores.Elements("Servidor"))
+                    var elementoMetodoEjecutar = elementoServidor.Element("MetodoEjecutar");
+                    if (elementoMetodoEjecutar != null)
                     {
-                        Servidor servidor = new Servidor();
-                        servidor.Nombre = elementoServidor.Attribute("Nombre")?.Value;
-                        servidor.MetodoEjecutar = new Metodo();
-                        servidor.MetodoBorrar = new Metodo();
-
-                        var elementoMetodoEjecutar = elementoServidor.Element("MetodoEjecutar");
-                        if (elementoMetodoEjecutar != null)
-                        {
-                            servidor.MetodoEjecutar.Carpeta = elementoMetodoEjecutar.Element("Carpeta")?.Value;
-                            servidor.MetodoEjecutar.Comando = elementoMetodoEjecutar.Element("Comando")?.Value;
-                        }
-
-                        var elementoMetodoBorrar = elementoServidor.Element("MetodoBorrar");
-                        if (elementoMetodoBorrar != null)
-                        {
-                            servidor.MetodoBorrar.Carpeta = elementoMetodoBorrar.Element("Carpeta")?.Value;
-                            servidor.MetodoBorrar.Comando = elementoMetodoBorrar.Element("Comando")?.Value;
-                        }
-
-                        lista.Servidores.Add(servidor);
+                        servidor.MetodoEjecutar.Carpeta = elementoMetodoEjecutar.Element("Carpeta")?.Value;
+                        servidor.MetodoEjecutar.Comando = elementoMetodoEjecutar.Element("Comando")?.Value;
                     }
 
-                    listaServidores.Add(lista);
+                    var elementoMetodoBorrar = elementoServidor.Element("MetodoBorrar");
+                    if (elementoMetodoBorrar != null)
+                    {
+                        servidor.MetodoBorrar.Carpeta = elementoMetodoBorrar.Element("Carpeta")?.Value;
+                        servidor.MetodoBorrar.Comando = elementoMetodoBorrar.Element("Comando")?.Value;
+                    }
+
+                    lista.Servidores.Add(servidor);
                 }
+
+                listaServidores.Add(lista);
             }
 
             return listaServidores;
@@ -84,26 +82,26 @@ namespace GestionServidores
             }
 
             xmlDoc.Add(root);
-            xmlDoc.Save("Servidores.xml");
+            xmlDoc.Save(xmlFilePath);
         }
     }
 
     public class ListaServidores
-        {
-            public string Nombre { get; set; }
-            public List<Servidor> Servidores { get; set; }
-        }
-
-        public class Servidor
-        {
-            public string Nombre { get; set; }
-            public Metodo MetodoEjecutar { get; set; }
-            public Metodo MetodoBorrar { get; set; }
-        }
-
-        public class Metodo
-        {
-            public string Carpeta { get; set; }
-            public string Comando { get; set; }
-        }
+    {
+        public string Nombre { get; set; }
+        public List<Servidor> Servidores { get; set; }
     }
+
+    public class Servidor
+    {
+        public string Nombre { get; set; }
+        public Metodo MetodoEjecutar { get; set; }
+        public Metodo MetodoBorrar { get; set; }
+    }
+
+    public class Metodo
+    {
+        public string Carpeta { get; set; }
+        public string Comando { get; set; }
+    }
+}

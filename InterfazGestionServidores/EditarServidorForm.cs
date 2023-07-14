@@ -2,20 +2,21 @@
 using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
-using static GestionServidores.GestionServidores;
 
 namespace InterfazGestionServidores
 {
     public partial class EditarServidorForm : Form
     {
         private Servidor servidor;
-        private List<ListaServidores> servidores;
+        private List<ListaServidores> listaServidores;
+        private GestionServidores.GestionServidores gestionServidores;
 
-        public EditarServidorForm(Servidor servidor, List<ListaServidores> servidores)
+        public EditarServidorForm(Servidor servidor,List<ListaServidores> listaServidores, GestionServidores.GestionServidores gestionServidores)
         {
             InitializeComponent();
             this.servidor = servidor;
-            this.servidores = servidores;
+            this.gestionServidores = gestionServidores;
+            this.listaServidores = listaServidores;
             CargarDatosServidor();
         }
 
@@ -36,13 +37,14 @@ namespace InterfazGestionServidores
             servidor.MetodoBorrar.Carpeta = txtCarpetaBorrar.Text;
             servidor.MetodoBorrar.Comando = txtComandoBorrar.Text;
 
-            // Guardar los servidores actualizados en el archivo XML
-            GestionServidores.GestionServidores gestionServidores = new GestionServidores.GestionServidores();
-            gestionServidores.GuardarServidoresEnXml(servidores);
+            // Guardar los cambios en el archivo XML
+            gestionServidores.GuardarServidoresEnXml(listaServidores);
         }
+
         private void btnGuardar_Click(object sender, EventArgs e)
         {
             GuardarCambios();
+            gestionServidores.GuardarServidoresEnXml(listaServidores);
             Close();
         }
     }
