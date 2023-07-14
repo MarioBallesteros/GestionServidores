@@ -67,12 +67,12 @@
     </Servidor>
     <Servidor Nombre="Servidor 7">
       <MetodoEjecutar>
-        <Carpeta>carpeta_ejecutar27</Carpeta>
-        <Comando>powershell -ExecutionPolicy Bypass -File RutaDelScript.ps1</Comando>
+        <Carpeta>C:\Users\Mario Ballesteros\Desktop\Mario\Prueba</Carpeta>
+        <Comando>echo prueba &gt; prueba.txt</Comando>
       </MetodoEjecutar>
       <MetodoBorrar>
-        <Carpeta>carpeta_borrar2</Carpeta>
-        <Comando>borrar_servidor2</Comando>
+        <Carpeta>C:\Users\Mario Ballesteros\Desktop\Mario\Prueba\borrar</Carpeta>
+        <Comando>rmdir /s /q .</Comando>
       </MetodoBorrar>
     </Servidor>
   </ListaServidores>

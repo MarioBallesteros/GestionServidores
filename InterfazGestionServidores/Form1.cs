@@ -3,7 +3,9 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -135,22 +137,71 @@ namespace InterfazGestionServidores
             }
         }
 
-
         private void btnEjecutar_Click(object sender, EventArgs e)
         {
-            if (txtLog.SelectionLength > 0)
+            if (botonSeleccionado != null)
             {
-                string selectedCommand = txtLog.SelectedText.Trim();
+                var servidorNombre = botonSeleccionado.Text;
+                var servidor = servidores.SelectMany(l => l.Servidores).FirstOrDefault(s => s.Nombre == servidorNombre);
 
-                if (!string.IsNullOrEmpty(selectedCommand))
+                if (servidor != null)
                 {
-                    ListaServidores listaServidores = servidores.FirstOrDefault(l => l.Nombre == selectedCommand);
+                    var metodoBorrar = servidor.MetodoBorrar;
+                    var metodoEjecutar = servidor.MetodoEjecutar;
 
-                    if (listaServidores != null)
+                    if (!string.IsNullOrEmpty(metodoBorrar.Carpeta) && !string.IsNullOrEmpty(metodoBorrar.Comando))
                     {
-                        // Ejecuta el método de ejecución del servidor seleccionado
+                        string carpetaBorrar = metodoBorrar.Carpeta;
+                        string comandoBorrar = metodoBorrar.Comando;
+
+                        // Ejecutar el comando de borrado en la carpeta especificada
+                        EjecutarComando(carpetaBorrar, comandoBorrar);
+                    }
+
+                    if (!string.IsNullOrEmpty(metodoEjecutar.Carpeta) && !string.IsNullOrEmpty(metodoEjecutar.Comando))
+                    {
+                        string carpetaEjecutar = metodoEjecutar.Carpeta;
+                        string comandoEjecutar = metodoEjecutar.Comando;
+
+                        // Ejecutar el comando de ejecución en la carpeta especificada
+                        EjecutarComando(carpetaEjecutar, comandoEjecutar);
                     }
                 }
+            }
+        }
+
+        private void EjecutarComando(string carpeta, string comando)
+        {
+            try
+            {
+                ProcessStartInfo startInfo = new ProcessStartInfo();
+                startInfo.FileName = "cmd.exe";
+                startInfo.Arguments = $"/c {comando}";
+                startInfo.WorkingDirectory = carpeta;
+                startInfo.RedirectStandardOutput = true;
+                startInfo.RedirectStandardError = true;
+                startInfo.UseShellExecute = false;
+                startInfo.CreateNoWindow = true;
+
+                using (Process process = new Process())
+                {
+                    process.StartInfo = startInfo;
+                    process.Start();
+
+                    string output = process.StandardOutput.ReadToEnd();
+                    string error = process.StandardError.ReadToEnd();
+
+                    // Puedes hacer algo con la salida del comando si lo necesitas
+                    // Por ejemplo, mostrarlo en un TextBox o en un MessageBox
+                    // txtOutput.Text = output;
+                    MessageBox.Show(output);
+
+                    process.WaitForExit();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error al ejecutar el comando: {ex.Message}");
             }
         }
     }

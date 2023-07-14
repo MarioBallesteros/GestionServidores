@@ -62,6 +62,7 @@
             this.btnEjecutar.TabIndex = 3;
             this.btnEjecutar.Text = "Ejecutar Comando";
             this.btnEjecutar.UseVisualStyleBackColor = true;
+            this.btnEjecutar.Click += new System.EventHandler(this.btnEjecutar_Click);
             // 
             // txtInfo
             // 
