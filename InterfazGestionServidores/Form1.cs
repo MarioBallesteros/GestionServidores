@@ -17,6 +17,7 @@ namespace InterfazGestionServidores
     {
         private List<ListaServidores> servidores;
         private GestionServidores.GestionServidores gestionServidores;
+        private Button botonSeleccionado;
 
         public Form1()
         {
@@ -40,14 +41,11 @@ namespace InterfazGestionServidores
 
                 panelLista.Controls.Add(buttonLista);
 
-                foreach (var comando in lista.Servidores)
+                buttonLista.Click += (sender1, e1) =>
                 {
-                    buttonLista.Click += (sender1, e1) =>
-                    {
-                        txtMetodos.Controls.Clear();
-                        MostrarServidores(lista.Servidores);
-                    };
-                }
+                    txtMetodos.Controls.Clear();
+                    MostrarServidores(lista.Servidores);
+                };
 
                 txtLog.Controls.Add(panelLista);
                 txtLog.AppendText("\r\n");
@@ -62,11 +60,29 @@ namespace InterfazGestionServidores
             panelLista.AutoSize = true;
             foreach (var servidor in servidores)
             {
+               
                 var buttonServidor = new Button();
                 buttonServidor.Text = servidor.Nombre;
                 buttonServidor.AutoSize = true;
                 panelLista.Controls.Add(buttonServidor);
 
+                buttonServidor.Click += (sender, e) =>
+                {
+                    botonSeleccionado = (Button)sender;
+                    var metodoEjecutar = servidor.MetodoEjecutar;
+                    var metodoBorrar = servidor.MetodoBorrar;
+
+                    txtInfo.Clear();
+                    txtInfo.AppendText($"Método Ejecutar:\r\n");
+                    txtInfo.AppendText($"Carpeta: {metodoEjecutar.Carpeta}\r\n");
+                    txtInfo.AppendText($"Comando: {metodoEjecutar.Comando}\r\n");
+
+                    txtInfo.AppendText($"\r\n");
+
+                    txtInfo.AppendText($"Método Borrar:\r\n");
+                    txtInfo.AppendText($"Carpeta: {metodoBorrar.Carpeta}\r\n");
+                    txtInfo.AppendText($"Comando: {metodoBorrar.Comando}\r\n");
+                };
             }
             txtMetodos.Controls.Add(panelLista);
             txtMetodos.AppendText("\r\n");
@@ -78,25 +94,47 @@ namespace InterfazGestionServidores
             txtMetodos.Clear();
         }
 
-        private void btnCargarComandos_Click(object sender, EventArgs e)
+        private void btnEditarServidor_Click(object sender, EventArgs e)
         {
-            servidores = gestionServidores.CargarServidoresDesdeXml();
-
-            txtLog.Clear();
-            txtMetodos.Clear();
-
-            foreach (var lista in servidores)
+            if (botonSeleccionado != null)
             {
-                txtLog.AppendText($"Nombre de la lista de servidores: {lista.Nombre}\r\n");
+                var servidorNombre = botonSeleccionado.Text;
+                var servidor = servidores.SelectMany(l => l.Servidores).FirstOrDefault(s => s.Nombre == servidorNombre);
 
-                foreach (var servidor in lista.Servidores)
+                if (servidor != null)
                 {
-                    txtLog.AppendText($"Servidor: {servidor.Nombre}\r\n");
-                }
+                    EditarServidorForm editarServidorForm = new EditarServidorForm(servidor, servidores);
+                    editarServidorForm.ShowDialog();
 
-                txtLog.AppendText("\r\n");
+                    // Actualizar los datos del servidor en el txtInfo después de cerrar el formulario de edición
+                    var metodoEjecutar = servidor.MetodoEjecutar;
+                    var metodoBorrar = servidor.MetodoBorrar;
+
+                    txtInfo.Clear();
+                    txtInfo.AppendText($"Método Ejecutar:\r\n");
+                    txtInfo.AppendText($"Carpeta: {metodoEjecutar.Carpeta}\r\n");
+                    txtInfo.AppendText($"Comando: {metodoEjecutar.Comando}\r\n");
+
+                    txtInfo.AppendText($"\r\n");
+
+                    txtInfo.AppendText($"Método Borrar:\r\n");
+                    txtInfo.AppendText($"Carpeta: {metodoBorrar.Carpeta}\r\n");
+                    txtInfo.AppendText($"Comando: {metodoBorrar.Comando}\r\n");
+
+                    // Guardar los servidores en el archivo XML
+                    GestionServidores.GestionServidores gestionServidores = new GestionServidores.GestionServidores();
+                    gestionServidores.GuardarServidoresEnXml(servidores);
+
+                    // Recargar los servidores desde el archivo XML
+                    servidores = gestionServidores.CargarServidoresDesdeXml();
+
+                    // Actualizar los datos en txtLog y txtMetodos
+                    txtLog.Clear();
+                    txtMetodos.Clear();
+                }
             }
         }
+
 
         private void btnEjecutar_Click(object sender, EventArgs e)
         {

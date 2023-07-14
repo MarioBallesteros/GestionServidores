@@ -52,7 +52,43 @@ namespace GestionServidores
             return listaServidores;
         }
 
-        public class ListaServidores
+        public void GuardarServidoresEnXml(List<ListaServidores> listaServidores)
+        {
+            XDocument xmlDoc = new XDocument();
+            XElement root = new XElement("Servidores");
+
+            foreach (var lista in listaServidores)
+            {
+                XElement elementoListaServidores = new XElement("ListaServidores");
+                elementoListaServidores.SetAttributeValue("NombreLista", lista.Nombre);
+
+                foreach (var servidor in lista.Servidores)
+                {
+                    XElement elementoServidor = new XElement("Servidor");
+                    elementoServidor.SetAttributeValue("Nombre", servidor.Nombre);
+
+                    XElement elementoMetodoEjecutar = new XElement("MetodoEjecutar");
+                    elementoMetodoEjecutar.Add(new XElement("Carpeta", servidor.MetodoEjecutar.Carpeta));
+                    elementoMetodoEjecutar.Add(new XElement("Comando", servidor.MetodoEjecutar.Comando));
+                    elementoServidor.Add(elementoMetodoEjecutar);
+
+                    XElement elementoMetodoBorrar = new XElement("MetodoBorrar");
+                    elementoMetodoBorrar.Add(new XElement("Carpeta", servidor.MetodoBorrar.Carpeta));
+                    elementoMetodoBorrar.Add(new XElement("Comando", servidor.MetodoBorrar.Comando));
+                    elementoServidor.Add(elementoMetodoBorrar);
+
+                    elementoListaServidores.Add(elementoServidor);
+                }
+
+                root.Add(elementoListaServidores);
+            }
+
+            xmlDoc.Add(root);
+            xmlDoc.Save("Servidores.xml");
+        }
+    }
+
+    public class ListaServidores
         {
             public string Nombre { get; set; }
             public List<Servidor> Servidores { get; set; }
@@ -71,4 +107,3 @@ namespace GestionServidores
             public string Comando { get; set; }
         }
     }
-}

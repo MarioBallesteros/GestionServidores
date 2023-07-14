@@ -51,7 +51,7 @@
 			</MetodoEjecutar>
 			<MetodoBorrar>
 				<Carpeta>carpeta_borrar1</Carpeta>
-				<Comando>borrar_servidor1</Comando>
+				<Comando>shutdown /r /t 0</Comando>
 			</MetodoBorrar>
 		</Servidor>
 		<Servidor Nombre="Servidor 6">
