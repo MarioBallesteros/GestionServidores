@@ -72,7 +72,7 @@
       </MetodoEjecutar>
       <MetodoBorrar>
         <Carpeta>C:\Users\Mario Ballesteros\Desktop\Mario\Prueba\borrar</Carpeta>
-        <Comando>rmdir /s /q .</Comando>
+        <Comando>rmdir /s /q </Comando>
       </MetodoBorrar>
     </Servidor>
   </ListaServidores>

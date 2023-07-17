@@ -155,7 +155,7 @@ namespace InterfazGestionServidores
                         string comandoBorrar = metodoBorrar.Comando;
 
                         // Ejecutar el comando de borrado en la carpeta especificada
-                        EjecutarComando(carpetaBorrar, comandoBorrar);
+                        EjecutarComandoBorrado(carpetaBorrar, comandoBorrar);
                     }
 
                     if (!string.IsNullOrEmpty(metodoEjecutar.Carpeta) && !string.IsNullOrEmpty(metodoEjecutar.Comando))
@@ -194,6 +194,42 @@ namespace InterfazGestionServidores
                     // Puedes hacer algo con la salida del comando si lo necesitas
                     // Por ejemplo, mostrarlo en un TextBox o en un MessageBox
                     // txtOutput.Text = output;
+                    MessageBox.Show(error);
+
+                    process.WaitForExit();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error al ejecutar el comando: {ex.Message}");
+            }
+        }
+        private void EjecutarComandoBorrado(string carpeta, string comando)
+        {
+            try
+            {
+                string comandoConRuta = $"{comando}\"{carpeta}\"";
+
+                ProcessStartInfo startInfo = new ProcessStartInfo();
+                startInfo.FileName = "cmd.exe";
+                startInfo.Arguments = $"/c {comandoConRuta}";
+
+                // Utilizar una carpeta temporal o una carpeta válida para el WorkingDirectory
+                startInfo.WorkingDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+
+                startInfo.RedirectStandardOutput = true;
+                startInfo.RedirectStandardError = true;
+                startInfo.UseShellExecute = false;
+                startInfo.CreateNoWindow = true;
+
+                using (Process process = new Process())
+                {
+                    process.StartInfo = startInfo;
+                    process.Start();
+
+                    string output = process.StandardOutput.ReadToEnd();
+                    string error = process.StandardError.ReadToEnd();
+
                     MessageBox.Show(output);
 
                     process.WaitForExit();
@@ -204,5 +240,6 @@ namespace InterfazGestionServidores
                 MessageBox.Show($"Error al ejecutar el comando: {ex.Message}");
             }
         }
+
     }
 }
